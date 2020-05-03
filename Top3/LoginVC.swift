@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import FirebaseAuth
+import GoogleSignIn
+
 
 class LoginVC: UIViewController {
     
@@ -15,10 +18,46 @@ class LoginVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initUI()
+        
+        GIDSignIn.sharedInstance()?.presentingViewController = self
+        GIDSignIn.sharedInstance()?.delegate = self
+    }
+    
+    @objc func loginWithGoogle() {
+        GIDSignIn.sharedInstance()?.signIn()
     }
     
 }
 
+
+
+
+// Handle sign in
+extension LoginVC: GIDSignInDelegate {
+    
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if let error = error {
+            print("\(error.localizedDescription)")
+            return
+        }
+        
+        guard let authentication = user.authentication else { return }
+        let credential = GoogleAuthProvider.credential(withIDToken: authentication.idToken, accessToken: authentication.accessToken)
+        
+        Auth.auth().signIn(with: credential) { (authResult, error) in
+            if let error = error {
+                print("\(error.localizedDescription)")
+                return
+            }
+        }
+    }
+
+}
+
+
+
+
+// User interface
 extension LoginVC {
     
     func initUI() {
@@ -31,7 +70,9 @@ extension LoginVC {
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginButton.setTitle("Login", for: .normal)
+        loginButton.setTitle("Login with Google", for: .normal)
+        
+        loginButton.addTarget(self, action: #selector(loginWithGoogle), for: .touchUpInside)
     }
     
 }
