@@ -15,10 +15,11 @@ class TabBarVC: UITabBarController {
         
         let firstVC = UINavigationController(rootViewController: HomeVC())
         let firstVCIcon = UIImage(systemName: "house.fill")?.withRenderingMode(.alwaysTemplate)
-        firstVC.tabBarItem = UITabBarItem(title: "", image: firstVCIcon, tag: 0)
+        firstVC.tabBarItem = UITabBarItem(title: "Home", image: firstVCIcon, tag: 0)
         
         let secondVC = UINavigationController(rootViewController: ProfileVC())
-        secondVC.tabBarItem = UITabBarItem(tabBarSystemItem: .more, tag: 1)
+        let secondVCIcon = UIImage(systemName: "person.crop.circle.fill")?.withRenderingMode(.alwaysTemplate)
+        secondVC.tabBarItem = UITabBarItem(title: "Profile", image: secondVCIcon, tag: 0)
         
         viewControllers = [firstVC, secondVC]
     }

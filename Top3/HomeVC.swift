@@ -18,8 +18,9 @@ class HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = "Top 3"
         styleUI()
+        navigationItem.title = "Top 3"
+        tabBarItem.imageInsets = UIEdgeInsets(top: 5.0, left: 0.0, bottom: -10.0, right: 0.0)
     }
     
     @objc func logout() {
