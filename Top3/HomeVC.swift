@@ -18,7 +18,8 @@ class HomeVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        initUI()
+        title = "Top 3"
+        styleUI()
     }
     
     @objc func logout() {
@@ -34,17 +35,26 @@ class HomeVC: UIViewController {
 
 extension HomeVC {
     
-    func initUI(){
+    func styleUI(){
+        styleVC()
+        styleTitle()
+        styleLogoutButton()
+    }
+    
+    func styleVC() {
         view.backgroundColor = .systemBackground
-        title = "Home"
         navigationController?.navigationBar.prefersLargeTitles = true
-        
+    }
+    
+    func styleTitle() {
         view.addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         titleLabel.text = user?.email
-        
+    }
+    
+    func styleLogoutButton() {
         view.addSubview(logoutButton)
         logoutButton.translatesAutoresizingMaskIntoConstraints = false
         logoutButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor).isActive = true

@@ -23,12 +23,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         
-        Auth.auth().addStateDidChangeListener { (_, user) in
-            switch user {
-            case nil:
+        Auth.auth().addStateDidChangeListener { (_, user) -> Void in
+            if let _ = user {
+                self.window?.rootViewController = TabBarVC()
+            } else {
                 self.window?.rootViewController = LoginVC()
-            default:
-                self.window?.rootViewController = UINavigationController(rootViewController: HomeVC())
             }
         }
         

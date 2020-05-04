@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		49031FC08D22F86675582255 /* Pods_Top3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AA5231DAE7414ACF8AD32D4 /* Pods_Top3.framework */; };
+		7C2343532460575C008257FA /* TabBarVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C2343522460575C008257FA /* TabBarVC.swift */; };
+		7C234355246057CF008257FA /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C234354246057CF008257FA /* ProfileVC.swift */; };
 		7C533D52245F327800D89AD5 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C533D51245F327800D89AD5 /* HomeVC.swift */; };
 		7C854D6B245DF2E90071E59B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C854D6A245DF2E90071E59B /* AppDelegate.swift */; };
 		7C854D6D245DF2E90071E59B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C854D6C245DF2E90071E59B /* SceneDelegate.swift */; };
@@ -45,6 +47,8 @@
 		23353D55F4E5F1297AA18E9E /* Pods-Top3Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Top3Tests.release.xcconfig"; path = "Target Support Files/Pods-Top3Tests/Pods-Top3Tests.release.xcconfig"; sourceTree = "<group>"; };
 		6756C7E4AA80A6968AE2A69B /* Pods-Top3Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Top3Tests.debug.xcconfig"; path = "Target Support Files/Pods-Top3Tests/Pods-Top3Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		6AA5231DAE7414ACF8AD32D4 /* Pods_Top3.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Top3.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7C2343522460575C008257FA /* TabBarVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarVC.swift; sourceTree = "<group>"; };
+		7C234354246057CF008257FA /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		7C533D51245F327800D89AD5 /* HomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
 		7C854D67245DF2E90071E59B /* Top3.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Top3.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C854D6A245DF2E90071E59B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -128,6 +132,8 @@
 				7C854D78245DF2EA0071E59B /* Info.plist */,
 				7C854D9A245DF3F40071E59B /* LoginVC.swift */,
 				7C533D51245F327800D89AD5 /* HomeVC.swift */,
+				7C2343522460575C008257FA /* TabBarVC.swift */,
+				7C234354246057CF008257FA /* ProfileVC.swift */,
 			);
 			path = Top3;
 			sourceTree = "<group>";
@@ -450,8 +456,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C234355246057CF008257FA /* ProfileVC.swift in Sources */,
 				7C854D6B245DF2E90071E59B /* AppDelegate.swift in Sources */,
 				7C533D52245F327800D89AD5 /* HomeVC.swift in Sources */,
+				7C2343532460575C008257FA /* TabBarVC.swift in Sources */,
 				7C854D6D245DF2E90071E59B /* SceneDelegate.swift in Sources */,
 				7C854D9B245DF3F40071E59B /* LoginVC.swift in Sources */,
 			);
