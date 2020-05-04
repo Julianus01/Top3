@@ -9,6 +9,7 @@
 import UIKit
 import FirebaseAuth
 import GoogleSignIn
+import SnapKit
 
 
 class LoginVC: UIViewController {
@@ -32,7 +33,7 @@ class LoginVC: UIViewController {
 
 
 
-// Handle sign in
+// MARK: Handle sign in
 extension LoginVC: GIDSignInDelegate {
     
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
@@ -57,7 +58,7 @@ extension LoginVC: GIDSignInDelegate {
 
 
 
-// User interface
+// MARK: User interface
 extension LoginVC {
     
     func initUI() {
@@ -67,10 +68,12 @@ extension LoginVC {
     
     func initLoginButton() {
         view.addSubview(loginButton)
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         loginButton.setTitle("Login with Google", for: .normal)
+        
+        loginButton.snp.makeConstraints { (make) in
+            make.centerY.equalTo(view)
+            make.centerX.equalTo(view)
+        }
         
         loginButton.addTarget(self, action: #selector(loginWithGoogle), for: .touchUpInside)
     }
