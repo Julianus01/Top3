@@ -13,7 +13,7 @@ class TabBarVC: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let firstVC = UINavigationController(rootViewController: HomeVC())
+        let firstVC = UINavigationController(rootViewController: Top3VC())
         let firstVCIcon = UIImage(systemName: "house.fill")?.withRenderingMode(.alwaysTemplate)
         firstVC.tabBarItem = UITabBarItem(title: "Home", image: firstVCIcon, tag: 0)
         

@@ -1,5 +1,5 @@
 //
-//  HomeVC.swift
+//  Top3VC.swift
 //  Top3
 //
 //  Created by Iulian Crisan on 03/05/2020.
@@ -10,7 +10,7 @@ import UIKit
 import FirebaseAuth
 import SnapKit
 
-class HomeVC: UIViewController {
+class Top3VC: UIViewController {
     
     private let user = Auth.auth().currentUser
     var titleLabel = UILabel()
@@ -43,7 +43,7 @@ class HomeVC: UIViewController {
 
 
 // MARK: USER INTERFACE
-extension HomeVC {
+extension Top3VC {
     
     func styleUI(){
         styleVC()
