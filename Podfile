@@ -9,6 +9,7 @@ target 'Top3' do
   pod 'Firebase/Auth'
   pod 'Firebase/Analytics'
   pod 'GoogleSignIn'
+  pod 'SnapKit', '~> 5.0.0'
 
   target 'Top3Tests' do
     inherit! :search_paths
