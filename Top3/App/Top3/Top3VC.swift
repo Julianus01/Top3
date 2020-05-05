@@ -16,8 +16,20 @@ class Top3VC: UIViewController {
     var scrollView = UIScrollView()
     var contentView = UIView()
     var cardView = UIView()
-    var cardButton = UIButton()
+    var cardButton = UIButton(type: .system)
     var cardTitleLabel = UILabel()
+    var todoIcon: UIImage {
+        let iconName = isCompleted ? "largecircle.fill.circle" : "circle"
+        let iconConfiguration = UIImage.SymbolConfiguration(scale: .large)
+        let icon = UIImage(systemName: iconName)?.withConfiguration(iconConfiguration).withTintColor(.darkGray).withRenderingMode(.alwaysOriginal)
+        
+        return icon!
+    }
+    var isCompleted = false {
+        didSet {
+            cardButton.setImage(todoIcon, for: .normal)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,17 +37,12 @@ class Top3VC: UIViewController {
         styleUI()
         title = "Top3"
         titleLabel.text = "Today"
+        cardButton.addTarget(self, action: #selector(testFunc), for: .touchUpInside)
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//        navigationController?.setNavigationBarHidden(true, animated: animated)
-//    }
-//
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: animated)
-//    }
+    @objc func testFunc() {
+        isCompleted.toggle()
+    }
     
 }
 
@@ -74,7 +81,7 @@ extension Top3VC {
     
     func styleContentView() {
         scrollView.addSubview(contentView)
-    
+        
         contentView.snp.makeConstraints { (make) in
             make.top.equalTo(scrollView)
             make.left.equalTo(scrollView)
@@ -104,16 +111,14 @@ extension Top3VC {
             make.top.equalTo(titleLabel.snp.bottom).offset(22)
             make.left.equalTo(contentView).offset(22)
             make.right.equalTo(contentView).offset(-22)
+            make.bottom.equalTo(contentView).offset(-22)
             make.height.greaterThanOrEqualTo(60)
         }
     }
     
     func styleCardButton() {
         cardView.addSubview(cardButton)
-        let iconConfiguration = UIImage.SymbolConfiguration(scale: .large)
-        let icon = UIImage(systemName: "circle")?.withConfiguration(iconConfiguration).withTintColor(.darkGray).withRenderingMode(.alwaysOriginal)
-        
-        cardButton.setImage(icon, for: .normal)
+        cardButton.setImage(todoIcon, for: .normal)
         cardButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         cardButton.snp.makeConstraints { (make) in
