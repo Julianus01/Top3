@@ -135,7 +135,7 @@ extension Top3VC {
         cardTitleLabel.snp.makeConstraints { (make) in
             make.top.equalTo(cardView).offset(19)
             make.left.equalTo(cardButton.snp.right)
-            make.right.equalTo(cardView).offset(0)
+            make.right.equalTo(cardView).offset(-22)
             make.bottom.equalTo(cardView).offset(-19)
         }
     }
