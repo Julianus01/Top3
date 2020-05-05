@@ -14,7 +14,7 @@ class TabBarVC: UITabBarController {
         super.viewDidLoad()
         
         let firstVC = UINavigationController(rootViewController: Top3VC())
-        let firstVCIcon = UIImage(systemName: "house.fill")?.withRenderingMode(.alwaysTemplate)
+        let firstVCIcon = UIImage(systemName: "rectangle.grid.1x2.fill")?.withRenderingMode(.alwaysTemplate)
         firstVC.tabBarItem = UITabBarItem(title: "Home", image: firstVCIcon, tag: 0)
         
         let secondVC = UINavigationController(rootViewController: ProfileVC())

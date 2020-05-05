@@ -101,6 +101,38 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7C84F5DF2461C4E200CBA76E /* Top3 */ = {
+			isa = PBXGroup;
+			children = (
+				7C533D51245F327800D89AD5 /* Top3VC.swift */,
+			);
+			path = Top3;
+			sourceTree = "<group>";
+		};
+		7C84F5E02461C4EF00CBA76E /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				7C854D9A245DF3F40071E59B /* LoginVC.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		7C84F5E12461C4FA00CBA76E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				7C234354246057CF008257FA /* ProfileVC.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		7C84F5E22461C50500CBA76E /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				7C2343522460575C008257FA /* TabBarVC.swift */,
+			);
+			path = TabBar;
+			sourceTree = "<group>";
+		};
 		7C854D5E245DF2E90071E59B = {
 			isa = PBXGroup;
 			children = (
@@ -158,10 +190,10 @@
 		7CD9E28024608AD7006EB74B /* App */ = {
 			isa = PBXGroup;
 			children = (
-				7C234354246057CF008257FA /* ProfileVC.swift */,
-				7C854D9A245DF3F40071E59B /* LoginVC.swift */,
-				7C2343522460575C008257FA /* TabBarVC.swift */,
-				7C533D51245F327800D89AD5 /* Top3VC.swift */,
+				7C84F5E02461C4EF00CBA76E /* Login */,
+				7C84F5E22461C50500CBA76E /* TabBar */,
+				7C84F5E12461C4FA00CBA76E /* Profile */,
+				7C84F5DF2461C4E200CBA76E /* Top3 */,
 			);
 			path = App;
 			sourceTree = "<group>";
