@@ -14,6 +14,7 @@ class Top3VC: UIViewController {
     
     let TODO_CELL = "TODO_CELL"
     var tableView = UITableView()
+    var todos: [Todo] = [Todo(title: "Wash car", isCompleted: true), Todo(title: "Get groceries", isCompleted: false), Todo(title: "Learn swift", isCompleted: false)]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,12 +30,13 @@ class Top3VC: UIViewController {
 extension Top3VC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return todos.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TODO_CELL) as! TodoCell
         cell.selectionStyle = .none
+        cell.todo = todos[indexPath.row]
         
         cell.textChanged = { [weak tableView] (textView: UITextView) in
             let size = textView.bounds.size

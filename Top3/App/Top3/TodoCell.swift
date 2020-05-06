@@ -26,6 +26,15 @@ class TodoCell: UITableViewCell {
         }
     }
     
+    var todo: Todo? {
+        didSet {
+            if let todo = todo {
+                textView.text = todo.title
+                isCompleted = todo.isCompleted
+            }
+        }
+    }
+    
     var cardView = UIView()
     var textView = UITextView()
     var textChanged: ((UITextView) -> Void)?
@@ -37,6 +46,9 @@ class TodoCell: UITableViewCell {
         styleUI()
         checkBox.addTarget(self, action: #selector(toggleButton), for: .touchUpInside)
         textView.addDoneButton(title: "Done", target: self, selector: #selector(tapDoneEditing))
+        
+        guard let todo = todo else { return }
+        print(todo)
     }
     
     required init?(coder: NSCoder) {
