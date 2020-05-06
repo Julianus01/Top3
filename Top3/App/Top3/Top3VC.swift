@@ -69,10 +69,14 @@ extension Top3VC {
     
     func styleTableView() {
         view.addSubview(tableView)
+        
         tableView.delegate = self
         tableView.dataSource = self
+        
         tableView.register(TodoCell.self, forCellReuseIdentifier: TODO_CELL)
         tableView.rowHeight = UITableView.automaticDimension
+        tableView.keyboardDismissMode = .interactive
+        tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 60
         
         tableView.snp.makeConstraints { (make) in
