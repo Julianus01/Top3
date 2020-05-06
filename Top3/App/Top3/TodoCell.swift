@@ -11,28 +11,29 @@ import SnapKit
 
 class TodoCell: UITableViewCell {
     
-    //    var todoIcon: UIImage {
-    //        let iconName = isCompleted ? "largecircle.fill.circle" : "circle"
-    //        let iconConfiguration = UIImage.SymbolConfiguration(scale: .large)
-    //        let icon = UIImage(systemName: iconName)?.withConfiguration(iconConfiguration).withTintColor(.darkGray).withRenderingMode(.alwaysOriginal)
-    //
-    //        return icon!
-    //    }
-    //
-    //    var isCompleted = false {
-    //        didSet {
-    //            cardButton.setImage(todoIcon, for: .normal)
-    //        }
-    //    }
+    var todoIcon: UIImage {
+        let iconName = isCompleted ? "largecircle.fill.circle" : "circle"
+        let iconConfiguration = UIImage.SymbolConfiguration(scale: .large)
+        let icon = UIImage(systemName: iconName)?.withConfiguration(iconConfiguration).withTintColor(.darkGray).withRenderingMode(.alwaysOriginal)
+        
+        return icon!
+    }
+    
+    var isCompleted = false {
+        didSet {
+            checkBox.setImage(todoIcon, for: .normal)
+        }
+    }
     
     var textView = UITextView()
     var textChanged: ((UITextView) -> Void)?
+    var checkBox = UIButton(type: .system)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         styleUI()
-        //          cardButton.addTarget(self, action: #selector(testFunc), for: .touchUpInside)
+        checkBox.addTarget(self, action: #selector(toggleButton), for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
@@ -40,7 +41,7 @@ class TodoCell: UITableViewCell {
     }
     
     @objc func toggleButton() {
-        //        isCompleted.toggle()
+        isCompleted.toggle()
     }
     
 }
@@ -60,21 +61,38 @@ extension TodoCell: UITextViewDelegate {
 extension TodoCell {
     
     func styleUI() {
+        styleCell()
+        styleCheckbox()
         styleTextView()
+    }
+    
+    func styleCell() {
+        
+    }
+    
+    func styleCheckbox() {
+        contentView.addSubview(checkBox)
+        checkBox.setImage(todoIcon, for: .normal)
+        checkBox.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        
+        checkBox.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(9)
+            make.left.equalToSuperview().offset(12)
+        }
     }
     
     func styleTextView() {
         contentView.addSubview(textView)
         textView.text = "Custom cell"
-//        textView.backgroundColor = .red
+        textView.font = UIFont.preferredFont(forTextStyle: .body)
         textView.isScrollEnabled = false
         textView.delegate = self
         
         textView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
-            make.left.equalToSuperview()
-            make.right.equalToSuperview()
-            make.bottom.equalToSuperview()
+            make.top.equalToSuperview().offset(12)
+            make.left.equalTo(checkBox.snp.right)
+            make.right.equalToSuperview().offset(-12)
+            make.bottom.equalToSuperview().offset(-12)
         }
     }
     
