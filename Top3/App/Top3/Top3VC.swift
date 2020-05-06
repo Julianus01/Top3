@@ -12,36 +12,41 @@ import SnapKit
 
 class Top3VC: UIViewController {
     
-    var titleLabel = UILabel()
-    var scrollView = UIScrollView()
-    var contentView = UIView()
-    var cardView = UIView()
-    var cardButton = UIButton(type: .system)
-    var cardTitleLabel = UILabel()
-    var todoIcon: UIImage {
-        let iconName = isCompleted ? "largecircle.fill.circle" : "circle"
-        let iconConfiguration = UIImage.SymbolConfiguration(scale: .large)
-        let icon = UIImage(systemName: iconName)?.withConfiguration(iconConfiguration).withTintColor(.darkGray).withRenderingMode(.alwaysOriginal)
-        
-        return icon!
-    }
-    var isCompleted = false {
-        didSet {
-            cardButton.setImage(todoIcon, for: .normal)
-        }
-    }
+    let TODO_CELL = "TODO_CELL"
+    var tableView = UITableView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         styleUI()
         title = "Top3"
-        titleLabel.text = "Today"
-        cardButton.addTarget(self, action: #selector(testFunc), for: .touchUpInside)
     }
     
-    @objc func testFunc() {
-        isCompleted.toggle()
+}
+
+
+// MARK: Table Functionality
+extension Top3VC: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TODO_CELL) as! TodoCell
+        cell.selectionStyle = .none
+        
+        cell.textChanged = { [weak tableView] (textView: UITextView) in
+            let size = textView.bounds.size
+            let newSize = textView.sizeThatFits(CGSize(width: size.width, height: .infinity))
+            
+            if size.height != newSize.height {
+                tableView?.beginUpdates()
+                tableView?.endUpdates()
+            }
+        }
+        
+        return cell
     }
     
 }
@@ -54,12 +59,7 @@ extension Top3VC {
     
     func styleUI(){
         styleVC()
-        styleScrollView()
-        styleContentView()
-        styleTitle()
-        styleCardView()
-        styleCardButton()
-        styleCardTitle()
+        styleTableView()
     }
     
     func styleVC() {
@@ -67,76 +67,19 @@ extension Top3VC {
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
-    func styleScrollView() {
-        view.addSubview(scrollView)
-        scrollView.alwaysBounceVertical = true
+    func styleTableView() {
+        view.addSubview(tableView)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(TodoCell.self, forCellReuseIdentifier: TODO_CELL)
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.estimatedRowHeight = 60
         
-        scrollView.snp.makeConstraints { (make) in
-            make.top.equalTo(view)
-            make.left.equalTo(view)
-            make.width.equalTo(view)
-            make.height.equalTo(view)
-        }
-    }
-    
-    func styleContentView() {
-        scrollView.addSubview(contentView)
-        
-        contentView.snp.makeConstraints { (make) in
-            make.top.equalTo(scrollView)
-            make.left.equalTo(scrollView)
-            make.right.equalTo(scrollView)
-            make.bottom.equalTo(scrollView)
-            make.width.equalTo(scrollView)
-        }
-    }
-    
-    func styleTitle() {
-        contentView.addSubview(titleLabel)
-        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        
-        titleLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(contentView).offset(32)
-            make.left.equalTo(contentView).offset(22)
-            make.right.equalTo(contentView).offset(-22)
-        }
-    }
-    
-    func styleCardView() {
-        contentView.addSubview(cardView)
-        cardView.backgroundColor = .secondarySystemBackground
-        cardView.layer.cornerRadius = 8
-        
-        cardView.snp.makeConstraints { (make) in
-            make.top.equalTo(titleLabel.snp.bottom).offset(22)
-            make.left.equalTo(contentView).offset(22)
-            make.right.equalTo(contentView).offset(-22)
-            make.bottom.equalTo(contentView).offset(-22)
-            make.height.greaterThanOrEqualTo(60)
-        }
-    }
-    
-    func styleCardButton() {
-        cardView.addSubview(cardButton)
-        cardButton.setImage(todoIcon, for: .normal)
-        cardButton.contentEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        
-        cardButton.snp.makeConstraints { (make) in
-            make.top.equalTo(cardView).offset(8)
-            make.left.equalTo(cardView).offset(12)
-        }
-    }
-    
-    func styleCardTitle() {
-        cardView.addSubview(cardTitleLabel)
-        cardTitleLabel.text = "Wash the car"
-        cardTitleLabel.numberOfLines = 0
-        
-        cardTitleLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(cardView).offset(19)
-            make.left.equalTo(cardButton.snp.right)
-            make.right.equalTo(cardView).offset(-22)
-            make.bottom.equalTo(cardView).offset(-19)
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
     }
     

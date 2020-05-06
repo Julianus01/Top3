@@ -21,6 +21,8 @@
 		7C854D8D245DF2EA0071E59B /* Top3UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C854D8C245DF2EA0071E59B /* Top3UITests.swift */; };
 		7C854D9B245DF3F40071E59B /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C854D9A245DF3F40071E59B /* LoginVC.swift */; };
 		7CD9E28A24608BB0006EB74B /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 7CD9E28924608BB0006EB74B /* Default-568h@2x.png */; };
+		7CDA46492463363900D9AF3E /* Todo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDA46482463363900D9AF3E /* Todo.swift */; };
+		7CDA464B2463364F00D9AF3E /* TodoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CDA464A2463364F00D9AF3E /* TodoCell.swift */; };
 		F59D27CEC778C034F9483FDB /* Pods_Top3Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 13C203DCC470AE784555C4A3 /* Pods_Top3Tests.framework */; };
 		FB252A9A498F2909B51966DF /* Pods_Top3_Top3UITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9640D8A58AD8513B58B48D1 /* Pods_Top3_Top3UITests.framework */; };
 /* End PBXBuildFile section */
@@ -66,6 +68,8 @@
 		7C854D8E245DF2EA0071E59B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		7C854D9A245DF3F40071E59B /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
 		7CD9E28924608BB0006EB74B /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		7CDA46482463363900D9AF3E /* Todo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Todo.swift; sourceTree = "<group>"; };
+		7CDA464A2463364F00D9AF3E /* TodoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoCell.swift; sourceTree = "<group>"; };
 		85E821E6E3D1882FACA0C697 /* Pods-Top3.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Top3.release.xcconfig"; path = "Target Support Files/Pods-Top3/Pods-Top3.release.xcconfig"; sourceTree = "<group>"; };
 		8AFC0B0D6463102DEA7CA96D /* Pods-Top3.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Top3.debug.xcconfig"; path = "Target Support Files/Pods-Top3/Pods-Top3.debug.xcconfig"; sourceTree = "<group>"; };
 		A9640D8A58AD8513B58B48D1 /* Pods_Top3_Top3UITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Top3_Top3UITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,6 +108,8 @@
 		7C84F5DF2461C4E200CBA76E /* Top3 */ = {
 			isa = PBXGroup;
 			children = (
+				7CDA46482463363900D9AF3E /* Todo.swift */,
+				7CDA464A2463364F00D9AF3E /* TodoCell.swift */,
 				7C533D51245F327800D89AD5 /* Top3VC.swift */,
 			);
 			path = Top3;
@@ -508,12 +514,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7CDA46492463363900D9AF3E /* Todo.swift in Sources */,
 				7C234355246057CF008257FA /* ProfileVC.swift in Sources */,
 				7C854D6B245DF2E90071E59B /* AppDelegate.swift in Sources */,
 				7C533D52245F327800D89AD5 /* Top3VC.swift in Sources */,
 				7C2343532460575C008257FA /* TabBarVC.swift in Sources */,
 				7C854D6D245DF2E90071E59B /* SceneDelegate.swift in Sources */,
 				7C854D9B245DF3F40071E59B /* LoginVC.swift in Sources */,
+				7CDA464B2463364F00D9AF3E /* TodoCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
