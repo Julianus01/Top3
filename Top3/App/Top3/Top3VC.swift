@@ -40,6 +40,14 @@ class Top3VC: UIViewController {
         title = "Top3"
     }
     
+    override func viewDidLayoutSubviews() {
+        let statusBarHeight = view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+        
+        tableView.snp.updateConstraints { (make) in
+            make.top.equalToSuperview().offset(statusBarHeight)
+        }
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
@@ -118,6 +126,11 @@ extension Top3VC {
     func styleVC() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
+        
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
+//            let height = self.view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+//            print(height)
+//        }
     }
     
     func styleTableView() {
@@ -132,6 +145,7 @@ extension Top3VC {
         tableView.separatorStyle = .none
         tableView.estimatedRowHeight = 60
         tableView.backgroundColor = .systemBackground
+        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
         tableView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
