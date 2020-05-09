@@ -64,7 +64,7 @@ class Top3VC: UIViewController {
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
@@ -167,22 +167,63 @@ extension Top3VC {
 extension Top3VC {
     
     func getTodos(completion: @escaping ([[Todo]]) -> ()) {
-        db.collection("todos").getDocuments() { (snapshot, error) in
+        let todayDate = Date()
+        var dateComponent = DateComponents()
+        dateComponent.day = 1
+        let tomorrowDate = Calendar.current.date(byAdding: dateComponent, to: todayDate)!
+        
+        getTodosOnDate(date: todayDate) { (todayResponse) in
+            self.getTodosOnDate(date: tomorrowDate) { (tomorrowResponse) in
+                var todayTodos = todayResponse
+                var tomorrowTodos = tomorrowResponse
+                
+                if todayTodos.count < 3 {
+                    for _ in 1...3 - todayTodos.count {
+                        todayTodos.append(Todo(title: "", isCompleted: false))
+                    }
+                }
+                
+                if tomorrowTodos.count < 3 {
+                    for _ in 1...3 - tomorrowTodos.count {
+                        tomorrowTodos.append(Todo(title: "", isCompleted: false))
+                    }
+                }
+                
+                completion([todayTodos, tomorrowTodos])
+            }
+        }
+    }
+    
+    func getTodosOnDate(date: Date, completion: @escaping ([Todo]) -> ()) {
+        db.collection("todos").whereField("createdAt", isDateInToday: date).getDocuments() { (snapshot, error) in
             if let error = error {
                 print("Error get request \(error)")
             } else {
                 var list: [Todo] = []
                 
                 for document in snapshot!.documents {
-                    let newTodo = Todo.init(data: document.data())!
-                    list.append(newTodo)
+                    let todo = Todo.init(data: document.data())!
+                    list.append(todo)
                 }
                 
-                completion(TODOS_ALL)
+                completion(list)
             }
         }
     }
     
+}
+
+extension CollectionReference {
+    func whereField(_ field: String, isDateInToday value: Date) -> Query {
+        let components = Calendar.current.dateComponents([.year, .month, .day], from: value)
+        guard
+            let start = Calendar.current.date(from: components),
+            let end = Calendar.current.date(byAdding: .day, value: 1, to: start)
+            else {
+                fatalError("Could not find start date or calculate end date.")
+        }
+        return whereField(field, isGreaterThan: start).whereField(field, isLessThan: end)
+    }
 }
 
 
