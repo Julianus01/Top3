@@ -31,26 +31,16 @@ class Top3VC: UIViewController {
     
     let TODO_CELL = "TODO_CELL"
     var tableView = UITableView(frame: .zero, style: .grouped)
-    var todos: [[Todo]] = TODOS_ALL
+    var todos: [[Todo]] = []
     let db = Firestore.firestore()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         styleUI()
-        title = "Top3"
-        
-        db.collection("todos").getDocuments { (snapshot, error) in
-            if let error = error {
-                print("Error get request \(error)")
-            } else {
-                var list: [Todo] = []
-                
-                for document in snapshot!.documents {
-                    let newTodo = Todo.init(data: document.data())!
-                    list.append(newTodo)
-                }
-            }
+        getTodos { (todos) in
+            self.todos = todos
+            self.tableView.reloadData()
         }
     }
     
@@ -128,6 +118,30 @@ extension Top3VC: UITableViewDelegate, UITableViewDataSource {
 
 
 
+// MARK: API
+extension Top3VC {
+    
+    func getTodos(completion: @escaping ([[Todo]]) -> ()) {
+        db.collection("todos").getDocuments() { (snapshot, error) in
+            if let error = error {
+                print("Error get request \(error)")
+            } else {
+                var list: [Todo] = []
+                
+                for document in snapshot!.documents {
+                    let newTodo = Todo.init(data: document.data())!
+                    list.append(newTodo)
+                }
+                
+                completion(TODOS_ALL)
+            }
+        }
+    }
+    
+}
+
+
+
 
 // MARK: USER INTERFACE
 extension Top3VC {
@@ -138,6 +152,7 @@ extension Top3VC {
     }
     
     func styleVC() {
+        title = "Top3"
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
     }
