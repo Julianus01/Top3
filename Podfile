@@ -8,6 +8,9 @@ target 'Top3' do
   # Pods for Top3
   pod 'Firebase/Auth'
   pod 'Firebase/Analytics'
+  pod 'Firebase/Firestore'
+  pod 'FirebaseFirestoreSwift'
+
   pod 'GoogleSignIn'
   pod 'SnapKit', '~> 5.0.0'
 

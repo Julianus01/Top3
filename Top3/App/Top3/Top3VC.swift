@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import FirebaseFirestore
 import SnapKit
 
 let TODOS = [
@@ -19,7 +20,6 @@ let TODOS = [
 let TODOS_TOMORROW = [
     Todo(title: "Tomorrow", isCompleted: true),
     Todo(title: "Tomorrow Get groceries", isCompleted: false),
-    Todo(title: "Tomorrow Learn swift", isCompleted: false)
 ]
 
 let TODOS_ALL = [
@@ -31,13 +31,27 @@ class Top3VC: UIViewController {
     
     let TODO_CELL = "TODO_CELL"
     var tableView = UITableView(frame: .zero, style: .grouped)
-    var todos: [Todo] = TODOS
+    var todos: [[Todo]] = TODOS_ALL
+    let db = Firestore.firestore()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         styleUI()
         title = "Top3"
+        
+        db.collection("todos").getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error get request \(error)")
+            } else {
+                var list: [Todo] = []
+                
+                for document in snapshot!.documents {
+                    let newTodo = Todo.init(data: document.data())!
+                    list.append(newTodo)
+                }
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -68,7 +82,7 @@ extension Top3VC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: TODO_CELL) as! TodoCell
         cell.selectionStyle = .none
         
-        cell.todo = TODOS_ALL[indexPath.section][indexPath.row]
+        cell.todo = todos[indexPath.section][indexPath.row]
         
         cell.textChanged = { [weak tableView] (textView: UITextView) in
             let size = textView.bounds.size
@@ -103,11 +117,11 @@ extension Top3VC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return TODOS_ALL[section].count
+        return todos[section].count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return TODOS_ALL.count
+        return todos.count
     }
     
 }
@@ -126,11 +140,6 @@ extension Top3VC {
     func styleVC() {
         view.backgroundColor = .systemBackground
         navigationController?.navigationBar.prefersLargeTitles = true
-        
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.0) {
-//            let height = self.view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-//            print(height)
-//        }
     }
     
     func styleTableView() {
