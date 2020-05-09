@@ -97,9 +97,14 @@ extension TodoCell: UITextViewDelegate {
 extension TodoCell {
     
     func styleUI() {
+        styleCell()
         styleCardView()
         styleCheckbox()
         styleTextView()
+    }
+    
+    func styleCell() {
+        contentView.backgroundColor = .systemBackground
     }
     
     func styleCardView() {
