@@ -144,11 +144,13 @@ extension TodoCell {
         textView.delegate = self
         textView.backgroundColor = .secondarySystemBackground
         
+        textView.textContainerInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 12)
+        
         textView.snp.makeConstraints { (make) in
-            make.top.equalTo(cardView).offset(12)
+            make.top.equalTo(cardView).offset(0)
             make.left.equalTo(checkBox.snp.right)
-            make.right.equalTo(cardView).offset(-12)
-            make.bottom.equalTo(cardView).offset(-12)
+            make.right.equalTo(cardView).offset(0)
+            make.bottom.equalTo(cardView).offset(0)
         }
     }
     
