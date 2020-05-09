@@ -37,7 +37,8 @@ class TodoCell: UITableViewCell {
     
     var cardView = UIView()
     var textView = UITextView()
-    var textChanged: ((UITextView) -> Void)?
+    var textChanged: ((UITextView) -> ())?
+    var didBeginEditing: (() -> ())?
     var checkBox = UIButton(type: .system)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -46,9 +47,6 @@ class TodoCell: UITableViewCell {
         styleUI()
         checkBox.addTarget(self, action: #selector(toggleButton), for: .touchUpInside)
         textView.addDoneButton(title: "Done", target: self, selector: #selector(tapDoneEditing))
-        
-        guard let todo = todo else { return }
-        print(todo)
     }
     
     required init?(coder: NSCoder) {
@@ -65,21 +63,6 @@ class TodoCell: UITableViewCell {
     
 }
 
-extension UITextView {
-    
-    func addDoneButton(title: String, target: Any, selector: Selector) {
-        
-        let toolBar = UIToolbar(frame: CGRect(x: 0.0,
-                                              y: 0.0,
-                                              width: UIScreen.main.bounds.size.width,
-                                              height: 44.0))//1
-        let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)//2
-        let barButton = UIBarButtonItem(title: title, style: .plain, target: target, action: selector)//3
-        toolBar.setItems([flexible, barButton], animated: false)//4
-        self.inputAccessoryView = toolBar//5
-    }
-}
-
 
 
 // MARK: Text View Delegate
@@ -87,6 +70,28 @@ extension TodoCell: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         textChanged?(textView)
+    }
+    
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        didBeginEditing?()
+        return true
+    }
+    
+}
+
+
+
+
+// MARK: Done Button
+extension UITextView {
+    
+    func addDoneButton(title: String, target: Any, selector: Selector) {
+        let frame = CGRect(x: 0.0, y: 0.0, width: UIScreen.main.bounds.size.width, height: 44.0)
+        let toolBar = UIToolbar(frame: frame)//1
+        let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let barButton = UIBarButtonItem(title: title, style: .plain, target: target, action: selector)
+        toolBar.setItems([flexible, barButton], animated: false)
+        self.inputAccessoryView = toolBar
     }
     
 }

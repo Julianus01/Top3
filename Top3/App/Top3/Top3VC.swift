@@ -32,6 +32,7 @@ class Top3VC: UIViewController {
     let TODO_CELL = "TODO_CELL"
     var tableView = UITableView(frame: .zero, style: .grouped)
     var todos: [[Todo]] = []
+    var selectedIndexPath: IndexPath = IndexPath()
     let db = Firestore.firestore()
     
     override func viewDidLoad() {
@@ -73,6 +74,10 @@ extension Top3VC: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         
         cell.todo = todos[indexPath.section][indexPath.row]
+        
+        cell.didBeginEditing = { [weak tableView] in
+            tableView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 400, right: 0)
+        }
         
         cell.textChanged = { [weak tableView] (textView: UITextView) in
             let size = textView.bounds.size
