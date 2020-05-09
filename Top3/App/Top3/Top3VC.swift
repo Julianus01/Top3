@@ -32,7 +32,7 @@ class Top3VC: UIViewController {
     let TODO_CELL = "TODO_CELL"
     var tableView = UITableView(frame: .zero, style: .grouped)
     var todos: [[Todo]] = []
-    var selectedIndexPath: IndexPath = IndexPath()
+    var editingTextViewIndexPath: IndexPath = IndexPath()
     let db = Firestore.firestore()
     
     override func viewDidLoad() {
@@ -56,6 +56,13 @@ class Top3VC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -72,12 +79,7 @@ extension Top3VC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TODO_CELL) as! TodoCell
         cell.selectionStyle = .none
-        
         cell.todo = todos[indexPath.section][indexPath.row]
-        
-        cell.didBeginEditing = { [weak tableView] in
-            tableView?.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 400, right: 0)
-        }
         
         cell.textChanged = { [weak tableView] (textView: UITextView) in
             let size = textView.bounds.size
@@ -86,7 +88,12 @@ extension Top3VC: UITableViewDelegate, UITableViewDataSource {
             if size.height != newSize.height {
                 tableView?.beginUpdates()
                 tableView?.endUpdates()
+                tableView?.scrollToRow(at: indexPath, at: .none, animated: true)
             }
+        }
+        
+        cell.didBeginEditing = {
+            self.editingTextViewIndexPath = indexPath
         }
         
         return cell
@@ -117,6 +124,39 @@ extension Top3VC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return todos.count
+    }
+    
+}
+
+
+
+
+// MARK: Keyboard
+extension Top3VC {
+    
+    @objc func keyboardWillAppear(notification: Notification) {
+        let userInfo = notification.userInfo!
+        let keyboardSize = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
+        let newHeight: CGFloat
+        
+        if #available(iOS 11.0, *) {
+            newHeight = keyboardSize.height - view.safeAreaInsets.bottom
+        } else {
+            newHeight = keyboardSize.height
+        }
+        
+        let contentInsets = UIEdgeInsets(top: 20, left: 0.0, bottom: newHeight, right: 0.0)
+        self.tableView.contentInset = contentInsets
+        self.tableView.scrollIndicatorInsets = contentInsets
+        self.tableView.scrollToRow(at: self.editingTextViewIndexPath, at: .none, animated: true)
+        
+        var rect = self.view.frame
+        rect.size.height -= keyboardSize.height
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        tableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        tableView.scrollIndicatorInsets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
     }
     
 }
