@@ -37,8 +37,9 @@ class TodoCell: UITableViewCell {
     
     var cardView = UIView()
     var textView = UITextView()
-    var textChanged: ((UITextView) -> ())?
+    var textSizeChanged: (() -> ())?
     var didBeginEditing: (() -> ())?
+    var didEndEditing: ((_ textView: UITextView) -> ())?
     var checkBox = UIButton(type: .system)
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -69,12 +70,21 @@ class TodoCell: UITableViewCell {
 extension TodoCell: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
-        textChanged?(textView)
+        let size = textView.bounds.size
+        let newSize = textView.sizeThatFits(CGSize(width: size.width, height: .infinity))
+        
+        if size.height != newSize.height {
+            textSizeChanged?()
+        }
     }
     
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         didBeginEditing?()
         return true
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) -> Void {
+        didEndEditing?(textView)
     }
     
 }

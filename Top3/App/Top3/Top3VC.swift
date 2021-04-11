@@ -11,22 +11,6 @@ import FirebaseAuth
 import FirebaseFirestore
 import SnapKit
 
-let TODOS = [
-    Todo(title: "Wash car", isCompleted: true),
-    Todo(title: "Get groceries", isCompleted: false),
-    Todo(title: "Learn swift", isCompleted: false)
-]
-
-let TODOS_TOMORROW = [
-    Todo(title: "Tomorrow", isCompleted: true),
-    Todo(title: "Tomorrow Get groceries", isCompleted: false),
-]
-
-let TODOS_ALL = [
-    TODOS,
-    TODOS_TOMORROW,
-]
-
 class Top3VC: UIViewController {
     
     let TODO_CELL = "TODO_CELL"
@@ -81,19 +65,19 @@ extension Top3VC: UITableViewDelegate, UITableViewDataSource {
         cell.selectionStyle = .none
         cell.todo = todos[indexPath.section][indexPath.row]
         
-        cell.textChanged = { [weak tableView] (textView: UITextView) in
-            let size = textView.bounds.size
-            let newSize = textView.sizeThatFits(CGSize(width: size.width, height: .infinity))
-            
-            if size.height != newSize.height {
-                tableView?.beginUpdates()
-                tableView?.endUpdates()
-                tableView?.scrollToRow(at: indexPath, at: .none, animated: true)
-            }
+        cell.textSizeChanged = { [weak tableView] in
+            tableView?.beginUpdates()
+            tableView?.endUpdates()
+            tableView?.scrollToRow(at: indexPath, at: .none, animated: true)
         }
         
         cell.didBeginEditing = {
             self.editingTextViewIndexPath = indexPath
+        }
+        
+        cell.didEndEditing = { (textView: UITextView) in
+            print("Done editing")
+            print("New text is '\(textView.text!)'")
         }
         
         return cell
@@ -172,20 +156,20 @@ extension Top3VC {
         dateComponent.day = 1
         let tomorrowDate = Calendar.current.date(byAdding: dateComponent, to: todayDate)!
         
-        getTodosOnDate(date: todayDate) { (todayResponse) in
-            self.getTodosOnDate(date: tomorrowDate) { (tomorrowResponse) in
+        getTodosOnDate(date: todayDate) { (todayResponse: [Todo]) in
+            self.getTodosOnDate(date: tomorrowDate) { (tomorrowResponse: [Todo]) in
                 var todayTodos = todayResponse
                 var tomorrowTodos = tomorrowResponse
                 
                 if todayTodos.count < 3 {
                     for _ in 1...3 - todayTodos.count {
-                        todayTodos.append(Todo(title: "", isCompleted: false))
+                        todayTodos.append(Todo(id: "1", title: "", isCompleted: false))
                     }
                 }
                 
                 if tomorrowTodos.count < 3 {
                     for _ in 1...3 - tomorrowTodos.count {
-                        tomorrowTodos.append(Todo(title: "", isCompleted: false))
+                        tomorrowTodos.append(Todo(id: "1",title: "", isCompleted: false))
                     }
                 }
                 
@@ -194,20 +178,21 @@ extension Top3VC {
         }
     }
     
-    func getTodosOnDate(date: Date, completion: @escaping ([Todo]) -> ()) {
-        db.collection("todos").whereField("createdAt", isDateInToday: date).getDocuments() { (snapshot, error) in
+    func getTodosOnDate(date: Date, completion: @escaping ([Todo]) -> Void) {
+        db.collection("todos").whereField("createdAt", isDateInToday: date).getDocuments() { (snapshot: QuerySnapshot?, error: Error?) in
             if let error = error {
-                print("Error get request \(error)")
-            } else {
-                var list: [Todo] = []
-                
-                for document in snapshot!.documents {
-                    let todo = Todo.init(data: document.data())!
-                    list.append(todo)
-                }
-                
-                completion(list)
+                print("ERROR get TODOS \(error)")
+                return
             }
+            
+            var todos: [Todo] = []
+            
+            snapshot!.documents.forEach { (document: QueryDocumentSnapshot) in
+                let todo = Todo.init(data: document.data())!
+                todos.append(todo)
+            }
+            
+            completion(todos)
         }
     }
     
@@ -219,9 +204,10 @@ extension CollectionReference {
         guard
             let start = Calendar.current.date(from: components),
             let end = Calendar.current.date(byAdding: .day, value: 1, to: start)
-            else {
-                fatalError("Could not find start date or calculate end date.")
+        else {
+            fatalError("Could not find start date or calculate end date.")
         }
+        
         return whereField(field, isGreaterThan: start).whereField(field, isLessThan: end)
     }
 }
